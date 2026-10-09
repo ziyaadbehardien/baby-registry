@@ -4,6 +4,9 @@
   "buildCommand": "npm run build",
   "devCommand": "vite --port $PORT",
   "outputDirectory": "build",
+  "regions": [
+    "lhr1"
+  ],
   "rewrites": [
     {
       "source": "/((?!api/).*)",

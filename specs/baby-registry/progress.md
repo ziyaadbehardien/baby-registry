@@ -2,6 +2,11 @@
 
 > Living log. Newest entries at the top; append-only.
 
+## 2026-10-09 — Hosting region
+
+- **Decision (owner):** Neon Postgres in AWS Europe (London, `eu-west-2`), the nearest Neon region to South Africa (~150–170 ms). Vercel Functions are pinned to London too (`"regions": ["lhr1"]` in `vercel.json`), so database queries stay in-region and the only long hop is visitor → London, once per request.
+- **POPIA:** registry data (names, purchase notes) is stored in the UK, a cross-border transfer under s72 to a jurisdiction with comparable data protection. The privacy notice should mention it.
+
 ## 2026-10-09 — Sign-in motion
 
 - **Decision (owner):** sign-in animations adapted from a Dribbble login concept (PayPal redesign by Michał Michańczyk), studied frame by frame from the shot's video, in the baby-blue palette.

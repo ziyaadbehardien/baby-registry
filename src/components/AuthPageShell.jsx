@@ -95,8 +95,9 @@ const AuthPageShell = ({ children }) => {
           <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', px: 1 }}>
             Privacy: we keep only the name you enter here, which is shown with anything you mark as
             bought, and any note you add. A cookie remembers this device so you don&apos;t need the
-            passphrase again. Nothing is shared with other services. Ask the parents-to-be if
-            you&apos;d like your details removed.
+            passphrase again. Your details are stored securely on servers in the United Kingdom and
+            aren&apos;t shared with anyone else. Ask the parents-to-be if you&apos;d like them
+            removed.
           </Typography>
         </Box>
       </Box>
