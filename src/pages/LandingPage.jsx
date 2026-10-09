@@ -92,6 +92,7 @@ const LandingPage = () => {
                   caption="Nursery theme"
                   value={details.nursery.title}
                   detail={details.nursery.detail}
+                  swatches={details.nursery.colors}
                 />
                 <StatCard
                   caption="Mindful focus"

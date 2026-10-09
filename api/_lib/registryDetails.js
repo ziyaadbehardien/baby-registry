@@ -13,13 +13,24 @@ export const registryDetails = {
   parents: 'Ziyaad & Tashreeqa',
   parentsTagline: 'Parents-to-be',
   monogram: 'B',
-  dueDate: '2025-10-14',
+  dueDate: '2027-02-28',
 
   headline: 'Welcoming Baby Behardien with boundless love & gratitude.',
   intro:
     "We are overjoyed to begin this transformative chapter together. As we prepare our home for our little one's arrival, your warmth, presence, and prayers mean everything to us.",
 
-  nursery: { title: 'Sage & Oat', detail: 'Natural oak accents' },
+  // `colors` render as swatches on the "Nursery theme" card.
+  nursery: {
+    title: 'Sage & Oat',
+    detail: 'Natural oak accents',
+    colors: [
+      { name: 'Sage', hex: '#A3B18A' },
+      { name: 'Moss', hex: '#7D8F69' },
+      { name: 'Oat', hex: '#E8DCC4' },
+      { name: 'Linen', hex: '#F5F0E6' },
+      { name: 'Oak', hex: '#C49A6C' },
+    ],
+  },
   focus: { title: 'Eco & Organic', detail: 'Heirloom quality pieces' },
 
   note: {

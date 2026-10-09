@@ -3,8 +3,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import welcomeArt from 'assets/images/welcome-toile.jpg';
 
-// Same artwork as the passphrase screen; the monogram plaque sits slightly left of centre.
-const ART_FOCUS = '47% 45%';
+// The artwork is cropped so the monogram plaque sits at its exact horizontal centre; keep x at
+// 50% so the plaque stays centred at every width (phones crop the sides).
+const ART_FOCUS = '50% 45%';
 // Fills the window below the sticky header (64px on phones incl. tab bar ≈ 116px; 72px desktop).
 const HERO_HEIGHT = { xs: 'calc(100svh - 116px)', md: 'calc(100svh - 73px)' };
 

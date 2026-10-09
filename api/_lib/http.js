@@ -52,7 +52,11 @@ export const withErrors = (handler) => async (request) => {
     if (error instanceof HttpError) {
       return errorResponse(error.status, error.code, error.message);
     }
-    console.error(`Unhandled API error: ${error?.name ?? 'UnknownError'}`);
+    // The SQLSTATE code (e.g. 42P01 = table missing) helps diagnose database failures and
+    // never contains data values.
+    const sqlState =
+      typeof error?.code === 'string' && /^[0-9A-Z]{5}$/.test(error.code) ? ` (${error.code})` : '';
+    console.error(`Unhandled API error: ${error?.name ?? 'UnknownError'}${sqlState}`);
     return errorResponse(500, 'INTERNAL_ERROR', 'Something went wrong. Please try again.');
   }
 };
