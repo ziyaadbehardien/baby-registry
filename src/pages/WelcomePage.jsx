@@ -5,6 +5,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router';
 
 import {
   Alert,
+  Box,
   Button,
   Card,
   IconButton,
@@ -26,6 +27,8 @@ import { useGetMeQuery, userApiSlice } from '../features/user/userApiSlice';
 
 import AuthPageShell, { frostedPanel } from 'components/AuthPageShell';
 import Loader from 'components/Loader';
+
+import { tones } from 'assets/theme';
 
 const NAME_PATTERN = /^[\p{L}\p{M}][\p{L}\p{M}' .-]*$/u;
 
@@ -124,6 +127,45 @@ const WelcomePage = () => {
         )}
       </Portal>
 
+      <Typography
+        variant="h1"
+        sx={{
+          textAlign: 'center',
+          px: 1,
+          // On phones the form column overlaps the banner; keep the title clear of the artwork.
+          mt: { xs: 5, md: 0 },
+          transition: `opacity 300ms ${MOTION.ease}`,
+          ...(phase === 'entering' && { opacity: 0 }),
+        }}
+      >
+        <Box
+          component="span"
+          sx={{
+            display: 'block',
+            color: tones.primary[30],
+            fontSize: { xs: '2.2rem', sm: '2.6rem' },
+            lineHeight: 1.1,
+          }}
+        >
+          Ziyaad &amp; Tash&apos;s
+        </Box>
+        <Box
+          component="span"
+          sx={{
+            display: 'block',
+            mt: 1,
+            color: 'secondary.dark',
+            fontFamily: (theme) => theme.typography.fontFamily,
+            fontSize: '0.8rem',
+            fontWeight: 700,
+            letterSpacing: '0.24em',
+            textTransform: 'uppercase',
+          }}
+        >
+          Baby Registry
+        </Box>
+      </Typography>
+
       <Card
         onAnimationEnd={(event) => {
           if (event.target === event.currentTarget) setIsShaking(false);
@@ -150,7 +192,7 @@ const WelcomePage = () => {
             }
           >
             <Stack spacing={1} alignItems="center" textAlign="center">
-              <Typography variant="h3" component="h1">
+              <Typography variant="h3" component="h2">
                 Welcome
               </Typography>
               <Typography color="text.secondary">

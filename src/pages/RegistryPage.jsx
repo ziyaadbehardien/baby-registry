@@ -55,9 +55,15 @@ const RegistryPage = () => {
     <PageContainer>
       <Stack spacing={3}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
-          <Typography variant="h3" component="h1">
-            Our registry
-          </Typography>
+          <Box>
+            <Typography variant="h3" component="h1">
+              Our registry
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, maxWidth: 560 }}>
+              These items are a guide, not a must. A similar item from any brand or shop is just as
+              welcome.
+            </Typography>
+          </Box>
           {isOwner && (
             <Button variant="contained" startIcon={<AddIcon />} onClick={handleAdd}>
               Add item

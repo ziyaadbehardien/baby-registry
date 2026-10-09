@@ -12,6 +12,7 @@ import HeartfeltNote from '../features/landing/HeartfeltNote';
 import HeroPhoto from '../features/landing/HeroPhoto';
 import { useGetRegistryDetailsQuery } from '../features/landing/landingApiSlice';
 import Monogram from '../features/landing/Monogram';
+import NurseryInspoDialog from '../features/landing/NurseryInspoDialog';
 import ShowerDetailsDialog from '../features/landing/ShowerDetailsDialog';
 import StatCard from '../features/landing/StatCard';
 
@@ -24,6 +25,7 @@ import { pageGutter, surface } from 'assets/theme';
 const LandingPage = () => {
   const { data: details, isLoading } = useGetRegistryDetailsQuery();
   const [isShowerOpen, setIsShowerOpen] = useState(false);
+  const [isInspoOpen, setIsInspoOpen] = useState(false);
 
   if (isLoading) return <Loader />;
   if (!details) return null;
@@ -93,6 +95,8 @@ const LandingPage = () => {
                   value={details.nursery.title}
                   detail={details.nursery.detail}
                   swatches={details.nursery.colors}
+                  onClick={() => setIsInspoOpen(true)}
+                  actionLabel="View inspiration photos"
                 />
                 <StatCard
                   caption="Mindful focus"
@@ -146,6 +150,12 @@ const LandingPage = () => {
           onClose={() => setIsShowerOpen(false)}
         />
       )}
+
+      <NurseryInspoDialog
+        open={isInspoOpen}
+        theme={details.nursery}
+        onClose={() => setIsInspoOpen(false)}
+      />
     </>
   );
 };
