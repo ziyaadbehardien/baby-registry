@@ -99,6 +99,8 @@ const RegistryPage = () => {
           sx={{
             display: 'grid',
             gap: 2,
+            // Every row as tall as the tallest card, so all cards are the same size.
+            gridAutoRows: '1fr',
             gridTemplateColumns: {
               xs: '1fr',
               sm: 'repeat(2, minmax(0, 1fr))',

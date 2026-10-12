@@ -53,10 +53,12 @@ const ItemCard = ({ item, isOwner, onPurchase, onEdit, onDelete }) => {
     <Card
       component="article"
       aria-labelledby={`item-${item.id}-name`}
-      sx={{ opacity: isComplete ? 0.75 : 1 }}
+      // Column layout so the buttons sit at the bottom and cards in a row line up.
+      sx={{ opacity: isComplete ? 0.75 : 1, display: 'flex', flexDirection: 'column' }}
     >
-      {item.imageUrl && <ItemPhoto src={item.imageUrl} alt={item.name} />}
-      <CardContent sx={{ pb: 1 }}>
+      {/* Always shown (a placeholder when there's no image) so every card is the same size. */}
+      <ItemPhoto src={item.imageUrl} alt={item.name} />
+      <CardContent sx={{ pb: 1, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Stack direction="row" spacing={1} alignItems="flex-start" justifyContent="space-between">
           <Typography
             id={`item-${item.id}-name`}
@@ -89,7 +91,8 @@ const ItemCard = ({ item, isOwner, onPurchase, onEdit, onDelete }) => {
           </Typography>
         )}
 
-        <Box sx={{ mt: 2 }}>
+        {/* Pushed to the bottom with the buttons, so it lines up with or without a description. */}
+        <Box sx={{ mt: 'auto', pt: 2 }}>
           <Typography variant="body2" sx={{ mb: 0.5 }}>
             {item.quantityPurchased} of {item.quantityWanted} bought
             {!isComplete && item.quantityWanted > 1 && ` · ${item.quantityNeeded} still needed`}

@@ -9,8 +9,8 @@ const COLORS = {
   secondary: { background: tones.secondary[90], accent: tones.secondary[40] },
 };
 
-/** Metric card from ui-specs/specs/ui/components.md, with an optional progress bar. */
-const TMetricBlock = ({ title, value, icon, color = 'primary', progress }) => {
+/** Metric card from ui-specs/specs/ui/components.md, with an optional progress bar and detail line. */
+const TMetricBlock = ({ title, value, icon, color = 'primary', progress, detail }) => {
   const palette = COLORS[color];
 
   return (
@@ -61,6 +61,11 @@ const TMetricBlock = ({ title, value, icon, color = 'primary', progress }) => {
             }}
           />
         )}
+        {detail && (
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75 }}>
+            {detail}
+          </Typography>
+        )}
       </Box>
     </Box>
   );
@@ -72,6 +77,7 @@ TMetricBlock.propTypes = {
   icon: PropTypes.node.isRequired,
   color: PropTypes.oneOf(['primary', 'secondary']),
   progress: PropTypes.number,
+  detail: PropTypes.node,
 };
 
 export default TMetricBlock;
