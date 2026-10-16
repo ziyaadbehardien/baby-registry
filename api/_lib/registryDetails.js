@@ -37,7 +37,7 @@ export const registryDetails = {
     greeting: 'Dearest Family and Friends,',
     paragraphs: [
       'As we count down the months until we meet our little boy, we’re slowly preparing for the beautiful changes that lie ahead.',
-      "From dreaming about his nursery to choosing the little things he’ll need, every step brings us closer to welcoming him home. we want togather pieces that will make our home a warm, safe, and special place for him to grow. Your presence in our little one's life is already the greatest gift we could ever pray for. For those who have asked how they might help us welcome our baby, this registry represents our most essential needs and dreams for the first year. Thank you for wrapping our beginning in such generous kindness.",
+      "From dreaming about his nursery to choosing the little things he’ll need, every step brings us closer to welcoming him home. we want to gather pieces that will make our home a warm, safe, and special place for him to grow. Your presence in our little one's life is already the greatest gift we could ever pray for. For those who have asked how they might help us welcome our baby, this registry represents our most essential needs and dreams for the first year. Thank you for wrapping our beginning in such generous kindness.",
       'We cannot wait for you to meet our little one.',
     ],
     signOff: 'With all our love,',
