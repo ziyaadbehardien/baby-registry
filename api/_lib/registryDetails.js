@@ -21,9 +21,10 @@ export const registryDetails = {
 
   // `colors` render as swatches on the "Nursery theme" card.
   nursery: {
-    title: 'Sage & Oat',
+    title: 'Soft colours & neutrals',
     detail: 'Natural oak accents',
     colors: [
+      { name: 'Baby blue', hex: '#9EC3E1' },
       { name: 'Sage', hex: '#A3B18A' },
       { name: 'Moss', hex: '#7D8F69' },
       { name: 'Oat', hex: '#E8DCC4' },

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { MenuItem, Stack, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Chip, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import {
   STATUS_FILTERS,
@@ -16,8 +16,6 @@ const STATUS_OPTIONS = [
   { value: STATUS_FILTERS.ALL, label: 'All' },
 ];
 
-const ALL_CATEGORIES = '';
-
 const RegistryFilters = ({ categories }) => {
   const dispatch = useDispatch();
   const { status, category } = useSelector(selectRegistryFilters);
@@ -27,12 +25,14 @@ const RegistryFilters = ({ categories }) => {
     if (value) dispatch(setStatusFilter(value));
   };
 
-  const handleCategoryChange = (event) => {
-    dispatch(setCategoryFilter(event.target.value || null));
-  };
+  // "All" plus one pill per category; null means no category filter.
+  const categoryOptions = [
+    { value: null, label: 'All categories' },
+    ...categories.map((name) => ({ value: name, label: name })),
+  ];
 
   return (
-    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems={{ sm: 'center' }}>
+    <Stack spacing={1.5} alignItems={{ xs: 'stretch', sm: 'flex-start' }}>
       <ToggleButtonGroup
         value={status}
         exclusive
@@ -53,21 +53,34 @@ const RegistryFilters = ({ categories }) => {
       </ToggleButtonGroup>
 
       {categories.length > 0 && (
-        <TextField
-          select
-          label="Category"
-          value={category ?? ALL_CATEGORIES}
-          onChange={handleCategoryChange}
-          slotProps={{ inputLabel: { shrink: true }, select: { displayEmpty: true } }}
-          sx={{ minWidth: { sm: 200 } }}
+        <Stack
+          role="group"
+          aria-label="Filter by category"
+          direction="row"
+          useFlexGap
+          flexWrap="wrap"
+          spacing={1}
         >
-          <MenuItem value={ALL_CATEGORIES}>All categories</MenuItem>
-          {categories.map((name) => (
-            <MenuItem key={name} value={name}>
-              {name}
-            </MenuItem>
-          ))}
-        </TextField>
+          {categoryOptions.map(({ value, label }) => {
+            const isSelected = category === value;
+            return (
+              <Chip
+                key={value ?? 'all-categories'}
+                label={label}
+                clickable
+                onClick={() => dispatch(setCategoryFilter(value))}
+                aria-pressed={isSelected}
+                color={isSelected ? 'primary' : 'default'}
+                variant={isSelected ? 'filled' : 'outlined'}
+                sx={{
+                  borderRadius: '2rem',
+                  fontWeight: isSelected ? 700 : 500,
+                  ...(!isSelected && { bgcolor: 'background.paper' }),
+                }}
+              />
+            );
+          })}
+        </Stack>
       )}
     </Stack>
   );
