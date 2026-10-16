@@ -22,5 +22,7 @@ export const useRole = () => {
     userId: data?.userId ?? null,
     name: data?.name ?? null,
     isOwner: data?.role === 'owner',
+    // View-only visitors can browse everything but can't mark gifts as bought.
+    isViewer: data?.role === 'viewer',
   };
 };

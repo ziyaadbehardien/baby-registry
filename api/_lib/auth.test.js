@@ -1,12 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { authenticate } from './auth.js';
+import { authenticate, requireCanPurchase } from './auth.js';
 import { createSessionToken, getAccessConfig, SESSION_COOKIE } from './session.js';
 
 // Fictional test values only.
 const ENV = {
   GUEST_PASSPHRASE: 'test guest phrase',
   OWNER_PASSPHRASE: 'test owner phrase',
+  VIEWER_PASSPHRASE: 'test viewer phrase',
   SESSION_SECRET: 'test-secret-0123456789-abcdefghij-klmnop',
 };
 
@@ -58,5 +59,13 @@ describe('authenticate', () => {
     const token = tokenFor('owner');
     vi.stubEnv('SESSION_SECRET', '');
     await expect(authenticate(requestWith(token))).rejects.toMatchObject({ status: 401 });
+  });
+});
+
+describe('requireCanPurchase', () => {
+  it('lets guests and owners mark gifts as bought, but not view-only visitors', () => {
+    expect(() => requireCanPurchase({ role: 'guest' })).not.toThrow();
+    expect(() => requireCanPurchase({ role: 'owner' })).not.toThrow();
+    expect(() => requireCanPurchase({ role: 'viewer' })).toThrow(expect.objectContaining({ status: 403 }));
   });
 });

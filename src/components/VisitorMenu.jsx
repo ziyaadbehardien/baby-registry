@@ -18,7 +18,7 @@ import { useRole } from '../features/user/userApiSlice';
 /** Header avatar for the current visitor, with their role and a "Leave" action. */
 const VisitorMenu = () => {
   const navigate = useNavigate();
-  const { name, isOwner } = useRole();
+  const { name, isOwner, isViewer } = useRole();
   const [leaveRegistry] = useLeaveRegistryMutation();
   const [anchor, setAnchor] = useState(null);
 
@@ -61,7 +61,7 @@ const VisitorMenu = () => {
         >
           <Typography fontWeight={700}>{name}</Typography>
           <Typography variant="caption" color="text.secondary">
-            {isOwner ? 'Registry owner' : 'Guest'}
+            {isOwner ? 'Registry owner' : isViewer ? 'View only' : 'Guest'}
           </Typography>
         </MenuItem>
         <Divider />

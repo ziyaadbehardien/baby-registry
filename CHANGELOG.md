@@ -2,6 +2,17 @@
 
 The version number lives in `package.json`, and each release is tagged in git (for example `v0.2.0`).
 
+## 0.3.0 — 16 October 2026
+
+### New
+
+- **View-only access.** A new optional `VIEWER_PASSPHRASE` lets people look around without being able to mark gifts as bought or undo purchases (the server refuses these, not just the app). They see a short "view-only" note on the registry, no "I've bought this" buttons, and "View only" in their account menu. Set it in Vercel's environment variables to switch it on. It must differ from the guest and owner passphrases.
+
+### Changed
+
+- **Our Story text.** New intro, note quote and letter text.
+- **Removed** the "Mindful focus" card, the "Send a gift" header button, the "Shower gathering details" button (set `shower` in `registryDetails.js` to bring it back) and the "From Ziyaad & Tashreeqa" line above the heartfelt note. The note is still signed at the bottom.
+
 ## 0.2.0 — 12 October 2026
 
 ### New

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Alert, Box, Button, Stack, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useSnackbar } from 'notistack';
 
@@ -23,7 +23,7 @@ import { filterItems, getCategories } from '../utils/registry';
 
 const RegistryPage = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const { isOwner } = useRole();
+  const { isOwner, isViewer } = useRole();
   const filters = useSelector(selectRegistryFilters);
   const { data: items = [], isLoading } = useGetItemsQuery();
   const [deleteItem, { isLoading: isDeleting }] = useDeleteItemMutation();
@@ -71,6 +71,13 @@ const RegistryPage = () => {
           )}
         </Stack>
 
+        {isViewer && (
+          <Alert severity="info">
+            You&apos;re viewing the registry in view-only mode, so gifts can&apos;t be marked as
+            bought from here.
+          </Alert>
+        )}
+
         {items.length > 0 && <RegistryProgress items={items} />}
         {items.length > 0 && <RegistryFilters categories={categories} />}
 
@@ -114,6 +121,7 @@ const RegistryPage = () => {
               key={item.id}
               item={item}
               isOwner={isOwner}
+              canPurchase={!isViewer}
               onPurchase={setPurchaseItem}
               onEdit={handleEdit}
               onDelete={setDeleteTarget}

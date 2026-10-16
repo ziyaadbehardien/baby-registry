@@ -9,22 +9,18 @@ import Grid from '@mui/material/Grid2';
  */
 const HeartfeltNote = ({ note, parents }) => (
   <Card component="article" sx={{ p: { xs: 3, sm: 5 } }}>
-    <Stack direction="row" justifyContent="space-between" alignItems="baseline" spacing={2}>
-      <Typography
-        variant="caption"
-        sx={{
-          color: 'secondary.dark',
-          fontWeight: 700,
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-        }}
-      >
-        A heartfelt note
-      </Typography>
-      <Typography variant="caption" color="text.secondary" sx={{ fontStyle: 'italic' }}>
-        From {parents}
-      </Typography>
-    </Stack>
+    <Typography
+      variant="caption"
+      component="p"
+      sx={{
+        color: 'secondary.dark',
+        fontWeight: 700,
+        letterSpacing: '0.08em',
+        textTransform: 'uppercase',
+      }}
+    >
+      A heartfelt note
+    </Typography>
     <Divider sx={{ my: 1.5 }} />
 
     <Grid container spacing={{ xs: 2.5, md: 6 }}>

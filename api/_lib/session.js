@@ -4,6 +4,7 @@
  * A visitor enters their name plus a passphrase:
  * - OWNER_PASSPHRASE → role "owner" (manage items, see every purchaser), 30-day session
  * - GUEST_PASSPHRASE → role "guest" (browse, mark items bought), 90-day session
+ * - VIEWER_PASSPHRASE → role "viewer" (browse only; can't mark anything bought), 30-day session
  *
  * On success the API sets an HttpOnly cookie holding a signed token
  * { id, name, role, expiry, passphrase version }:
@@ -13,13 +14,13 @@
  * - JavaScript can't read the cookie (HttpOnly); SameSite=Lax plus an Origin check on writes
  *   (auth.js) guard against cross-site requests.
  *
- * All three settings are server-only secrets and must never be prefixed with VITE_.
+ * All of these settings are server-only secrets and must never be prefixed with VITE_.
  */
 import { createHash, createHmac, randomUUID, timingSafeEqual } from 'node:crypto';
 
 export const SESSION_COOKIE = 'registry_session';
-export const ROLES = { OWNER: 'owner', GUEST: 'guest' };
-export const SESSION_DAYS = { [ROLES.OWNER]: 30, [ROLES.GUEST]: 90 };
+export const ROLES = { OWNER: 'owner', GUEST: 'guest', VIEWER: 'viewer' };
+export const SESSION_DAYS = { [ROLES.OWNER]: 30, [ROLES.GUEST]: 90, [ROLES.VIEWER]: 30 };
 const MIN_SECRET_LENGTH = 32;
 const DAY_SECONDS = 24 * 60 * 60;
 
@@ -29,16 +30,24 @@ export const normalizePassphrase = (value) =>
 
 /**
  * Returns the access settings, or null when they're missing (access then fails closed).
- * The owner passphrase is optional, and is ignored if it's the same as the guest one.
+ * The owner and viewer passphrases are optional. Each is ignored if it repeats an earlier one
+ * (guest, then owner), so one passphrase can never unlock two roles.
  */
 export const getAccessConfig = (env = process.env) => {
-  const guest = env.GUEST_PASSPHRASE ? normalizePassphrase(env.GUEST_PASSPHRASE) : '';
-  const owner = env.OWNER_PASSPHRASE ? normalizePassphrase(env.OWNER_PASSPHRASE) : '';
+  const read = (name) => (env[name] ? normalizePassphrase(env[name]) : '');
+  const guest = read('GUEST_PASSPHRASE');
+  const owner = read('OWNER_PASSPHRASE');
+  const viewer = read('VIEWER_PASSPHRASE');
   const secret = env.SESSION_SECRET ?? '';
   if (!guest || secret.length < MIN_SECRET_LENGTH) return null;
+  const ownerPassphrase = owner && owner !== guest ? owner : null;
   return {
     secret,
-    passphrases: { [ROLES.GUEST]: guest, [ROLES.OWNER]: owner && owner !== guest ? owner : null },
+    passphrases: {
+      [ROLES.GUEST]: guest,
+      [ROLES.OWNER]: ownerPassphrase,
+      [ROLES.VIEWER]: viewer && viewer !== guest && viewer !== ownerPassphrase ? viewer : null,
+    },
   };
 };
 
@@ -48,12 +57,14 @@ const sha256 = (data) => createHash('sha256').update(data).digest();
 const matches = (input, expected) =>
   Boolean(expected) && timingSafeEqual(sha256(normalizePassphrase(input)), sha256(expected));
 
-/** Which role (if any) a passphrase unlocks. Both comparisons always run, in constant time. */
+/** Which role (if any) a passphrase unlocks. Every comparison always runs, in constant time. */
 export const roleForPassphrase = (input, config) => {
   const isOwner = matches(input, config.passphrases[ROLES.OWNER]);
   const isGuest = matches(input, config.passphrases[ROLES.GUEST]);
+  const isViewer = matches(input, config.passphrases[ROLES.VIEWER]);
   if (isOwner) return ROLES.OWNER;
   if (isGuest) return ROLES.GUEST;
+  if (isViewer) return ROLES.VIEWER;
   return null;
 };
 

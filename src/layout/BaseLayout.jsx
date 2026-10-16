@@ -139,18 +139,6 @@ const BaseLayout = () => {
                 </Typography>
               </Box>
             )}
-            <Button
-              variant="contained"
-              component={Link}
-              to="/registry"
-              sx={{
-                display: { xs: 'none', sm: 'inline-flex' },
-                borderRadius: '2rem',
-                minHeight: '2.25rem',
-              }}
-            >
-              Send a gift
-            </Button>
             <VisitorMenu />
           </Toolbar>
 

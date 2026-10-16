@@ -17,7 +17,7 @@ export const registryDetails = {
 
   headline: 'Welcoming Baby Behardien with boundless love & gratitude.',
   intro:
-    "We are overjoyed to begin this transformative chapter together. As we prepare our home for our little one's arrival, your warmth, presence, and prayers mean everything to us.",
+    'As we begin this beautiful new chapter of our lives as mom & dad, our hearts are filled with love, excitement, and gratitude. One of our greatest blessings is knowing that our little love bug will grow up surrounded by such wonderful family and loved ones. Thank you for being part of our journey and for being people he will be so lucky to know, love, and learn from. We can’t wait for you to be part of his story, too.',
 
   // `colors` render as swatches on the "Nursery theme" card.
   nursery: {
@@ -31,24 +31,19 @@ export const registryDetails = {
       { name: 'Oak', hex: '#C49A6C' },
     ],
   },
-  focus: { title: 'Eco & Organic', detail: 'Heirloom quality pieces' },
 
   note: {
-    quote: 'We are preparing not just a room, but a sanctuary of quiet warmth.',
+    quote: 'A SPACE WHERE LITTLE DREAMS AND LOTS OF LOVE WILL GROW.',
     greeting: 'Dearest Family and Friends,',
     paragraphs: [
-      'As we step quietly through these final nesting weeks, the nursery has slowly transformed into our favourite sanctuary. The morning light spills across simple oak shelves, soft knitted blankets, and the gentle whisper of linen curtains. Every item chosen for our little one has been selected with deep intention, prioritising non-toxic, sustainable materials and items made to endure and be cherished.',
-      "Your presence in our little one's life is already the greatest gift we could ever pray for. For those who have asked how they might help us welcome our baby, this registry represents our most essential needs and dreams for the first year.",
-      'Thank you for wrapping our beginning in such generous kindness. We cannot wait for you to meet our little one.',
+      'As we count down the months until we meet our little boy, we’re slowly preparing for the beautiful changes that lie ahead.',
+      "From dreaming about his nursery to choosing the little things he’ll need, every step brings us closer to welcoming him home. we want togather pieces that will make our home a warm, safe, and special place for him to grow. Your presence in our little one's life is already the greatest gift we could ever pray for. For those who have asked how they might help us welcome our baby, this registry represents our most essential needs and dreams for the first year. Thank you for wrapping our beginning in such generous kindness.",
+      'We cannot wait for you to meet our little one.',
     ],
-    signOff: 'With all our tender love,',
+    signOff: 'With all our love,',
   },
 
-  // Set to null to hide the "Shower gathering details" button.
-  shower: {
-    date: '2025-09-20',
-    time: '2:00 pm – 5:00 pm',
-    location: 'The Behardien home',
-    details: 'A relaxed afternoon of tea, cake and good company. Little ones welcome.',
-  },
+  // Set to null to hide the "Shower gathering details" button. To show it, use e.g.
+  // { date: 'YYYY-MM-DD', time: '2:00 pm – 5:00 pm', location: '…', details: '…' }.
+  shower: null,
 };

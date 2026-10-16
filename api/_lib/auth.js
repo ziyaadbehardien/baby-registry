@@ -38,6 +38,13 @@ export const authenticate = async (request) => {
   return { userId: `${session.role}_${session.id}`, role: session.role, name: session.name };
 };
 
+/** Viewers can browse everything but can't mark gifts as bought or undo purchases. */
+export const requireCanPurchase = (auth) => {
+  if (auth.role === ROLES.VIEWER) {
+    throw new HttpError(403, 'FORBIDDEN', 'View-only access can’t mark gifts as bought.');
+  }
+};
+
 export const requireOwner = (auth) => {
   if (auth.role !== ROLES.OWNER) {
     throw new HttpError(403, 'FORBIDDEN', 'Only the registry owner can do that.');

@@ -98,11 +98,6 @@ const LandingPage = () => {
                   onClick={() => setIsInspoOpen(true)}
                   actionLabel="View inspiration photos"
                 />
-                <StatCard
-                  caption="Mindful focus"
-                  value={details.focus.title}
-                  detail={details.focus.detail}
-                />
               </Stack>
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 3 }}>

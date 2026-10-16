@@ -19,10 +19,11 @@ Set these server-only variables in `.env.local` (locally) and in Vercel's enviro
 |---|---|
 | `GUEST_PASSPHRASE` | Shared with family and friends. Lets them browse and mark gifts as bought. |
 | `OWNER_PASSPHRASE` | For the two of you only. Lets you add, edit and remove items and see who bought what. Must differ from the guest passphrase. |
+| `VIEWER_PASSPHRASE` | Optional. View-only access for anyone who just wants to look: they can browse everything but can't mark gifts as bought or undo purchases, and they don't see who bought what. Must differ from the guest and owner passphrases (if it repeats one, it's ignored). |
 | `SESSION_SECRET` | Signs the session cookies. At least 32 random characters, e.g. from `openssl rand -base64 48`. |
 
 - Passphrases ignore case and extra spaces.
-- After a correct entry, a device stays in for 90 days (guests) or 30 days (owners).
+- After a correct entry, a device stays in for 90 days (guests) or 30 days (owners and view-only visitors).
 - Changing a passphrase signs out everyone who used it. Changing `SESSION_SECRET` signs out everyone.
 - After 10 wrong attempts in 15 minutes, further attempts from that connection are refused until the window passes.
 - Until `GUEST_PASSPHRASE` and `SESSION_SECRET` are set, nobody can get in.
@@ -31,7 +32,7 @@ Set these server-only variables in `.env.local` (locally) and in Vercel's enviro
 
 1. Import this repo as a Vercel project. The framework preset is Vite; the settings come from `vercel.json`.
 2. Add **Neon** from the Vercel Marketplace (Storage tab). This sets `DATABASE_URL`.
-3. Add `GUEST_PASSPHRASE`, `OWNER_PASSPHRASE` and `SESSION_SECRET` (see [.env.example](.env.example)).
+3. Add `GUEST_PASSPHRASE`, `OWNER_PASSPHRASE`, `SESSION_SECRET` and, if you want view-only access, `VIEWER_PASSPHRASE` (see [.env.example](.env.example)).
 4. Pull the variables locally and create the tables:
 
    ```bash
@@ -66,7 +67,7 @@ Apart from `/sessions`, every endpoint requires the session cookie set by `POST 
 |---|---|---|---|
 | POST | `/api/v1/sessions` | anyone | `{ name, passphrase }` → sets the session cookie (`401` wrong, `429` too many attempts) |
 | DELETE | `/api/v1/sessions` | anyone | Leave: clears the cookie |
-| GET | `/api/v1/me` | any | Caller's role (`owner` / `guest`) and name |
+| GET | `/api/v1/me` | any | Caller's role (`owner` / `guest` / `viewer`) and name |
 | GET | `/api/v1/registry-details` | any | Landing-page content |
 | GET | `/api/v1/hero-photo` | any | Family photo as a data URL (`404` if none) |
 | GET | `/api/v1/items` | any | All items with remaining quantity |
@@ -74,6 +75,6 @@ Apart from `/sessions`, every endpoint requires the session cookie set by `POST 
 | POST | `/api/v1/items` | owner | Add an item |
 | PUT | `/api/v1/items/:id` | owner | Replace an item (can't go below quantity bought → `409`) |
 | DELETE | `/api/v1/items/:id` | owner | Remove an item and its purchases |
-| POST | `/api/v1/items/:id/purchases` | any | Mark as bought (`409` if it would exceed what's needed) |
+| POST | `/api/v1/items/:id/purchases` | owner / guest | Mark as bought (`409` if it would exceed what's needed) |
 | GET | `/api/v1/purchases` | any | Purchases; guests only see names and notes on their own |
-| DELETE | `/api/v1/purchases/:id` | purchaser / owner | Undo a purchase |
+| DELETE | `/api/v1/purchases/:id` | purchaser / owner (not viewer) | Undo a purchase |

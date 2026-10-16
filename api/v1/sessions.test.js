@@ -20,6 +20,7 @@ const { DELETE, POST } = await import('./sessions.js');
 const ENV = {
   GUEST_PASSPHRASE: 'test guest phrase',
   OWNER_PASSPHRASE: 'test owner phrase',
+  VIEWER_PASSPHRASE: 'test viewer phrase',
   SESSION_SECRET: 'test-secret-0123456789-abcdefghij-klmnop',
 };
 
@@ -48,6 +49,12 @@ describe('POST /api/v1/sessions', () => {
     expect(await response.json()).toEqual({ name: 'Test Aunt', role: 'guest' });
     const cookie = response.headers.get('set-cookie');
     expect(cookie).toMatch(/^registry_session=[^;]+; Path=\/; HttpOnly; SameSite=Lax; Max-Age=7776000; Secure$/);
+  });
+
+  it('grants the view-only role for the viewer passphrase, with a 30-day cookie', async () => {
+    const response = await enter({ name: 'Test Visitor', passphrase: 'Test Viewer Phrase' });
+    expect(await response.json()).toEqual({ name: 'Test Visitor', role: 'viewer' });
+    expect(response.headers.get('set-cookie')).toMatch(/Max-Age=2592000;/);
   });
 
   it('grants the owner role for the owner passphrase', async () => {

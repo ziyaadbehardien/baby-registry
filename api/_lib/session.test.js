@@ -14,6 +14,7 @@ import {
 const ENV = {
   GUEST_PASSPHRASE: 'Test Guest Phrase',
   OWNER_PASSPHRASE: 'test-owner-phrase',
+  VIEWER_PASSPHRASE: 'Test Viewer Phrase',
   SESSION_SECRET: 'test-secret-0123456789-abcdefghij-klmnop',
 };
 const config = getAccessConfig(ENV);
@@ -32,10 +33,26 @@ describe('getAccessConfig', () => {
   });
 });
 
+describe('viewer passphrase', () => {
+  it('is optional, and ignored when it repeats the guest or owner passphrase', () => {
+    expect(getAccessConfig({ ...ENV, VIEWER_PASSPHRASE: '' }).passphrases.viewer).toBeNull();
+    expect(getAccessConfig({ ...ENV, VIEWER_PASSPHRASE: 'test guest phrase' }).passphrases.viewer).toBeNull();
+    expect(getAccessConfig({ ...ENV, VIEWER_PASSPHRASE: 'TEST-OWNER-PHRASE' }).passphrases.viewer).toBeNull();
+  });
+
+  it('signs viewers out when it is removed', () => {
+    const viewer = createSessionToken({ name: 'V', role: 'viewer' }, config, NOW);
+    expect(verifySessionToken(viewer, config, NOW)).toMatchObject({ role: 'viewer' });
+    const removed = getAccessConfig({ ...ENV, VIEWER_PASSPHRASE: '' });
+    expect(verifySessionToken(viewer, removed, NOW)).toBeNull();
+  });
+});
+
 describe('roleForPassphrase', () => {
   it('matches each role, ignoring case and extra spaces', () => {
     expect(roleForPassphrase('  test   guest PHRASE ', config)).toBe('guest');
     expect(roleForPassphrase('TEST-OWNER-PHRASE', config)).toBe('owner');
+    expect(roleForPassphrase('test viewer phrase', config)).toBe('viewer');
     expect(roleForPassphrase('wrong', config)).toBeNull();
     expect(normalizePassphrase('  A  B ')).toBe('a b');
   });

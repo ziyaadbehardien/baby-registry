@@ -42,7 +42,7 @@ export const itemPropType = PropTypes.shape({
   quantityNeeded: PropTypes.number.isRequired,
 });
 
-const ItemCard = ({ item, isOwner, onPurchase, onEdit, onDelete }) => {
+const ItemCard = ({ item, isOwner, canPurchase = true, onPurchase, onEdit, onDelete }) => {
   const isComplete = item.quantityNeeded === 0;
   const priorityChip = PRIORITY_CHIPS[item.priority];
   const progress = (item.quantityPurchased / item.quantityWanted) * 100;
@@ -107,9 +107,11 @@ const ItemCard = ({ item, isOwner, onPurchase, onEdit, onDelete }) => {
       </CardContent>
 
       <CardActions sx={{ px: 2, pb: 2, flexWrap: 'wrap', gap: 1 }}>
-        <Button variant="contained" onClick={() => onPurchase(item)} disabled={isComplete}>
-          {isComplete ? 'All bought' : "I've bought this"}
-        </Button>
+        {canPurchase && (
+          <Button variant="contained" onClick={() => onPurchase(item)} disabled={isComplete}>
+            {isComplete ? 'All bought' : "I've bought this"}
+          </Button>
+        )}
         {safeLink && (
           <Button
             variant="outlined"
@@ -152,6 +154,7 @@ const ItemCard = ({ item, isOwner, onPurchase, onEdit, onDelete }) => {
 ItemCard.propTypes = {
   item: itemPropType.isRequired,
   isOwner: PropTypes.bool.isRequired,
+  canPurchase: PropTypes.bool,
   onPurchase: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
