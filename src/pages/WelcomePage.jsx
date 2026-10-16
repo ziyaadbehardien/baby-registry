@@ -147,7 +147,7 @@ const WelcomePage = () => {
             lineHeight: 1.1,
           }}
         >
-          Ziyaad &amp; Tash&apos;s
+          Ziyaad &amp; Tashreeqa&apos;s
         </Box>
         <Box
           component="span"
